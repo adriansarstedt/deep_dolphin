@@ -1,3 +1,5 @@
+[![adriansarstedt](https://circleci.com/gh/adriansarstedt/deep_dolphin.svg?style=svg)](https://app.circleci.com/pipelines/github/adriansarstedt/deep_dolphin)
+
 # DeepDolphin
 
 DeepDolphin is a library of work produced for the Austin Hospital of Melbourne.
