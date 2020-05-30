@@ -22,4 +22,4 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            nosetests spec/contouring
+            make test

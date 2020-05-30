@@ -1,10 +1,10 @@
-[![adriansarstedt](https://circleci.com/gh/adriansarstedt/deep_dolphin.svg?style=svg)](https://app.circleci.com/pipelines/github/adriansarstedt/deep_dolphin)
+[![adriansarstedt](https://circleci.com/gh/adriansarstedt/deep_dolphin.svg?style=shield&circle-token=5f49fde881ddd893225b4fb0e2efe5af4f38222e)](https://app.circleci.com/pipelines/github/adriansarstedt/deep_dolphin)
 
 # DeepDolphin
 
-DeepDolphin is a library of work produced for the Austin Hospital of Melbourne.
+DeepDolphin is a library produced for the Austin Hospital of Melbourne.
 
-It focuses on providing a work flow for automated brain tumour segmentation using neural network technology.
+It provides a work flow for automated brain tumour segmentation using neural network technology.
 
 ## Setup
 
