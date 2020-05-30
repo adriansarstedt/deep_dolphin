@@ -1,11 +1,16 @@
-machine:
-  python:
-    version: 3.6.10
-
-dependencies:
-  override:
-    - pip install -r requirements.txt
-
-test:
-  override:
-    - nosetests spec/contouring
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.9-stretch
+        environment:
+          PYTHONPATH: ./
+          TEST_DATABASE_URL: postgresql://ubuntu@localhost/circle_test?sslmode=disable
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Run tests
+          command: nosetests spec/contouring
