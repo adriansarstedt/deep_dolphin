@@ -1,4 +1,5 @@
 import os
+from shapely.geometry import asLineString
 
 class Contour(object):
 
@@ -29,16 +30,14 @@ class Contour(object):
         else:
             return None
 
-    def add(self, point):
+    def is_valid(self):
+        return( (len(self.points)<2) or (asLineString(self.points).is_simple) )
+
+    def is_complete(self):
+        return( (len(self.points)>1) and (self.points[0] == self.points[-1]) )
+
+    def add_point(self, point):
         # ensure point is in tuple format
         new_point = (point[0], point[1])
         self.points.append(new_point)
         return self
-
-
-if __name__ == '__main__':
-    a = Contour()
-    print(a.first_point())
-    print(a.last_point())
-    print(a.previous_point())
-    print(a.add((1, 1)))

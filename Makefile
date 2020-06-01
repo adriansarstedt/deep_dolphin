@@ -13,4 +13,4 @@ test:
 	# https://stackoverflow.com/questions/16200333/import-errors-when-running-nosetests-that-i-cant-reproduce-outside-of-nose/26584815#26584815
 	# able to add multiple test directories as shown below
 	# $ nosetests spec/contouring spec/server
-	nosetests -P spec/contouring
+	nosetests -P spec/contouring spec/helpers
