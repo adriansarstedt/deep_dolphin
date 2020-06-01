@@ -15,10 +15,10 @@ class TestContour(unittest.TestCase):
         self.assertEqual(c.last_point(), (3, 3))
         self.assertEqual(c.previous_point(), (2, 2))
 
-    def test_add_point(self):
+    def test_add_vertice(self):
         c = Contour([(1, 1)])
-        c.add_point((2, 2))
-        c.add_point([3, 3])
+        c.add_vertice((2, 2))
+        c.add_vertice([3, 3])
         self.assertEqual(c.points, [(1, 1), (2, 2), (3, 3)])
 
     def test_is_valid(self):
