@@ -30,7 +30,9 @@ class Contour(object):
             return None
 
     def add(self, point):
-        self.points.append(point)
+        # ensure point is in tuple format
+        new_point = (point[0], point[1])
+        self.points.append(new_point)
         return self
 
 
