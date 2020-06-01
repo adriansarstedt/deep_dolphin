@@ -19,7 +19,7 @@ class TestContour(unittest.TestCase):
         c = Contour([(1, 1)])
         c.add_vertice((2, 2))
         c.add_vertice([3, 3])
-        self.assertEqual(c.points, [(1, 1), (2, 2), (3, 3)])
+        self.assertEqual(c.vertices, [(1, 1), (2, 2), (3, 3)])
 
     def test_is_valid(self):
         c_1 = Contour([(1, 1), (2, 2), (3, 3), (4, 4), (4, 0), (0, 0), (0, 2), (1, 2)])

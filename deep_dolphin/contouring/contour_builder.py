@@ -18,7 +18,7 @@ class ContourBuilder(object):
         while (self.contour.is_incomplete() and self.contour.has_not_terminated()):
             next_vertice = self.exhaustive_search_for_next_vertice(base_smoothing_factor)
             self.contour.add_vertice(next_vertice)
-        return( self.contour.points )
+        return( self.contour.vertices )
 
     def exhaustive_search_for_next_vertice(self, base_smoothing_factor):
         for smoothing_factor in range(base_smoothing_factor, len(self.points)):
@@ -27,11 +27,8 @@ class ContourBuilder(object):
 
     def search_for_next_vertice(self, smoothing_factor):
         neighbours_sorted_by_distance = sorted(self.points, key=(self.contour.distance_to_point))
-        print(neighbours_sorted_by_distance)
         nearest_neighbours = neighbours_sorted_by_distance[:smoothing_factor]
-        print(nearest_neighbours)
         nearest_neighbours_sorted_by_angle = sorted(nearest_neighbours, key=(self.contour.angle_to_point))
-        print(nearest_neighbours_sorted_by_angle)
 
         for i in range(0, smoothing_factor):
             potential_next_point = nearest_neighbours_sorted_by_angle[i]
