@@ -8,7 +8,7 @@ from deep_dolphin.contouring.contour_builder import ContourBuilder
 class MaskToDicomExporterTest(unittest.TestCase):
 
     def test_(self):
-        example_mask_path = "./spec/fixtures/output_mask.nii.gz"
+        example_mask_path = "./fixtures/output_mask.nii.gz"
         mask = nib.load(example_mask_path)
 
         (X, Y, Z) = mask.shape

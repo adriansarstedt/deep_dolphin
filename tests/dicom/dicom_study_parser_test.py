@@ -5,7 +5,7 @@ class DicomStudyParserTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        self.study_parser = DicomStudyParser('./spec/fixtures/dicom/compressed_study')
+        self.study_parser = DicomStudyParser('./fixtures/dicom/compressed_study')
 
     def test_get(self):
         self.assertEqual(self.study_parser.get('StudyInstanceUID'), '1.3.6.1.4.1.19291.2.1.1.116221177219232116612168727612')
