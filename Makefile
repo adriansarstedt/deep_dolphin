@@ -8,6 +8,9 @@ setup:
 	@echo "export PYTHONPATH=$$PYTHONPATH:$$PWD"
 	@echo
 
+install_dependencies:
+	pip install -r dependencies.txt
+
 test:
 	# must include the -P tag to enforce no-path-adjustment
 	# https://stackoverflow.com/questions/16200333/import-errors-when-running-nosetests-that-i-cant-reproduce-outside-of-nose/26584815#26584815
