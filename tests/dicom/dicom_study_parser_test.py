@@ -42,8 +42,5 @@ class DicomStudyParserTest(unittest.TestCase):
             '1.3.6.1.4.1.19291.2.1.3.1162211772192321166121687297768']
         )
 
-    
-        
-
 if __name__ == '__main__':
     unittest.main()
