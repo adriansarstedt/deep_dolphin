@@ -38,8 +38,8 @@ class RTStructGeneratorTest(unittest.TestCase):
             os.remove(save_path)
         save_rt_struct(save_path, self.dicom_path, self.series_protocol, self.contours)
 
-        self.assertTrue(os.path.exists(
-            save_path)
+        self.assertTrue(
+            os.path.exists(save_path)
         )
         
 if __name__ == '__main__':

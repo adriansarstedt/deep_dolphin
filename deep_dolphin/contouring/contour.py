@@ -36,10 +36,15 @@ class Contour(object):
             return None
 
     def is_valid(self):
-        return( (len(self.vertices)<2) or (asLineString(self.vertices).is_simple) )
+        return (
+            (len(self.vertices)>2)
+        )
+
+    def has_no_overlaps(self):
+        return ( (len(self.vertices)<2) or (asLineString(self.vertices).is_simple) )
 
     def is_complete(self):
-        return( (len(self.vertices)>1) and (self.vertices[0] == self.vertices[-1]) )
+        return ( (len(self.vertices)>1) and (self.vertices[0] == self.vertices[-1]) )
 
     def is_incomplete(self):
         return( not self.is_complete() )
@@ -61,6 +66,9 @@ class Contour(object):
 
     def add_vertice(self, point):
         # ensure point is in tuple format
-        new_point = (point[0], point[1])
-        self.vertices.append(new_point)
+        if point == None:
+            self.vertices.append(self.vertices[0])
+        else:
+            new_point = (point[0], point[1])
+            self.vertices.append(new_point)
         return self

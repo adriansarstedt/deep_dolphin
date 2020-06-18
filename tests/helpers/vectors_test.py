@@ -12,6 +12,8 @@ class TestVectors(unittest.TestCase):
             angle_between_points((1,1), (1,50), (1,51)), 180)
         self.assertEqual(
             angle_between_points((0,0), (1,0), (1,-1)), 270)
-
+        self.assertEqual(
+            angle_between_points((0,1), (0,0), (1,0)), 90)
+            
 if __name__ == '__main__':
     unittest.main()
