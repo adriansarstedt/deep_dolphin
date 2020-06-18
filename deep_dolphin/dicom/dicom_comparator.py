@@ -19,6 +19,16 @@ class DicomComparator(object):
         self.dcm_1 = dcm_1
         self.dcm_2 = dcm_2
 
+    def no_content_differences(self):
+        return (
+            len(self.load_content_differences()) == 0
+        )
+
+    def no_differences(self):
+        return (
+            len(self.load_all_differences()) == 0
+        )
+
     def load_content_differences(self):
         return (
             list(filter(self.is_content_difference, self.load_all_differences()))

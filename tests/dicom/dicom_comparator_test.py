@@ -13,8 +13,8 @@ class DicomComparatorTest(unittest.TestCase):
     def test_identical_dicoms(self):
         comparator = DicomComparator(self.dcm_1, self.dcm_2)
 
-        self.assertEquals(comparator.load_all_differences(), [])
-        self.assertEquals(comparator.load_content_differences(), [])
+        self.assertTrue(comparator.no_differences())
+        self.assertTrue(comparator.no_content_differences())
 
     def test_unidentical_dicoms(self):
 

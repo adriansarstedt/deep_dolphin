@@ -6,7 +6,7 @@ import difflib
 from deep_dolphin.dicom.rtstruct_generator import save_rt_struct, generate_rt_struct
 from deep_dolphin.dicom.dicom_comparator import DicomComparator
 
-class DicomStudyParserTest(unittest.TestCase):
+class RTStructGeneratorTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -18,21 +18,29 @@ class DicomStudyParserTest(unittest.TestCase):
         }
 
     def test_generate_rt_struct(self):
+        # The fixture below has been created using MIM and references the 
+        # same dicom_path, series_protocol and contours as definied in setUp()
+        # Asserting that there are no content differences between the
+        # newly generated rtstruct and the fixture ensures we are producing
+        # a file which is readable and contains the correct tags
         generated_rtstruct = generate_rt_struct(self.dicom_path, self.series_protocol, self.contours)
-        verified_rtstruct = dcmread('./fixtures/dicom/compressed_study/rtstruct.dcm')
-        comparator = DicomComparator(generated_rtstruct, verified_rtstruct)
+        fixture = dcmread('./fixtures/dicom/compressed_study/rtstruct.dcm')
+        comparator = DicomComparator(generated_rtstruct, fixture)
         
-        self.assertEqual(comparator.load_content_differences(), [])
+        self.assertTrue(
+            comparator.no_content_differences()
+        )
 
     def test_save_rt_struct(self):
+        # Check that save_rt_struct() is saving a file to the specified directory
         save_path = './tests/outputs/rtstruct.dcm'
-
         if os.path.exists(save_path):
             os.remove(save_path)
-
         save_rt_struct(save_path, self.dicom_path, self.series_protocol, self.contours)
 
-        self.assertTrue(os.path.exists(save_path))
+        self.assertTrue(os.path.exists(
+            save_path)
+        )
         
 if __name__ == '__main__':
     unittest.main()
