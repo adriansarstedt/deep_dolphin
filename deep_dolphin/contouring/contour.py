@@ -9,17 +9,7 @@ class Contour(object):
     def __init__(self, vertices=[]):
         self.vertices = vertices
 
-    def __repr__(self):
-        return str(self.vertices)
-
-    def __str__(self):
-        return str(self.vertices)
-
-    def copy(self):
-        return Contour(self.vertices.copy())
-
-    def remove_last_vertice(self):
-        del(self.vertices[-1])
+    ### Vertice functionality
 
     def last_vertice(self):
         if len(self.vertices) > 0:
@@ -33,32 +23,48 @@ class Contour(object):
         else:
             return None
 
-    def is_valid(self):
+    def remove_last_vertice(self):
+        del(self.vertices[-1])
+
+    def add_vertice(self, point):
+        self.vertices.append(point)
+        return self
+
+    ### Geometry checks
+
+    def is_small(self):
         return (
-            (len(self.vertices)>2)
+            (len(self.vertices)<3)
         )
 
-    def intersects_with(self, line_strings):
-        
-        for line_string in line_strings:
-            if asLineString(self.vertices).crosses(line_string):
-                return ( True )
-            
+    def is_simple(self):
+        return ( 
+            self.is_small() or LineString(self.vertices).is_simple
+        )
 
-    def has_no_overlaps(self):
-        return ( (len(self.vertices)<2) or (asLineString(self.vertices).is_simple) )
+    def intersects(self, line_strings):
+        for line_string in line_strings:
+            if LineString(self.vertices).crosses(line_string):
+                return ( True )
+
+    def doesnt_intersect(self, line_strings):
+        return (
+            not self.intersects(line_strings)
+        )
+
+    ### Status checks
+
+    def is_empty(self):
+        return ( 
+            len(self.vertices)==0 
+        )
 
     def is_complete(self):
-        return ( (len(self.vertices)>1) and (self.vertices[0] == self.vertices[-1]) )
+        return ( 
+            (len(self.vertices)>1) and (self.vertices[0] == self.vertices[-1])
+        )
 
-    def is_incomplete(self):
-        return( not self.is_complete() )
-
-    def has_terminated(self):
-        return ( len(self.vertices) == 0 )
-
-    def has_not_terminated(self):
-        return ( not self.has_terminated() )
+    ## Measurement methods
 
     def angle_to_point(self, p):
         return ( -1*angle_between_points(self.previous_vertice(), self.last_vertice(), p) )
@@ -69,7 +75,15 @@ class Contour(object):
         else:
             return ( distance_between_points(self.last_vertice(), p) )
 
-    def add_vertice(self, point):
-        # ensure point is in tuple format
-        self.vertices.append(point)
-        return ( self )
+    ### Generic methods
+
+    def __repr__(self):
+        return str(self.vertices)
+
+    def __str__(self):
+        return str(self.vertices)
+
+    def copy(self):
+        return Contour(self.vertices.copy())
+
+    

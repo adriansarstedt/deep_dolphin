@@ -36,7 +36,11 @@ def vector_joining_points(p1, p2):
     return(np.array(p2) - np.array(p1))
 
 def unit_vector(vector):
-    return vector / np.linalg.norm(vector)
+    return (vector / np.linalg.norm(vector))
 
 def clockwise_normal(v):
-    return((v[1], -v[0]))
+    return ((v[1], -v[0]))
+
+def find_lowest_point(points):
+    sorted_points = sorted(points, key=(lambda p: p[1]))
+    return (sorted_points[0])

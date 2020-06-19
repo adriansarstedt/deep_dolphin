@@ -30,7 +30,7 @@ class MaskToDicomExporterTest(unittest.TestCase):
         remaining_edge_points = EdgeDetector(mask_slice).get_edge_points()
 
         while len(remaining_edge_points) > 0:
-            (next_contour, unexplored_points) = ContourBuilder(remaining_edge_points, contours).build_next_contour(3)
+            (next_contour, unexplored_points) = ContourBuilder(remaining_edge_points, contours).build(3)
             contours.append(next_contour)
             next_contour_poly = Polygon(next_contour)
             next_enlarged_contour_poly = next_contour_poly.buffer(2)
