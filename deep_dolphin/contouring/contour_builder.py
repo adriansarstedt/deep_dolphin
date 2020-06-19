@@ -4,32 +4,31 @@ from deep_dolphin.helpers.vectors import angle_between_points
 
 class ContourBuilder(object):
 
-    def __init__(self, points=[]):
-        self.points = points
-        
-        
+    def __init__(self, unordered_points_to_build_contour_from=[]):
+        self.unexplored_points = unordered_points_to_build_contour_from
+        self.explored_points = []
         self.contour = Contour([self.initial_point()])
-        
-
+    
     def __repr__(self):
-        return str(self.points)
+        return str(self.unexplored_points)
 
     def __str__(self):
-        return str(self.points)
+        return str(self.unexplored_points)
 
-    def build(self, base_smoothing_factor):
+    def build(self, smoothing_factor):
         while (self.contour.is_incomplete() and self.contour.has_not_terminated()):
-            next_vertice = self.exhaustive_search_for_next_vertice(base_smoothing_factor)
-            self.contour.add_vertice(next_vertice)
-        return( self.contour )
-
-    def exhaustive_search_for_next_vertice(self, base_smoothing_factor):
-        for smoothing_factor in range(base_smoothing_factor, len(self.points)):
-            if (self.search_for_next_vertice(smoothing_factor) != None):
-                return( self.search_for_next_vertice(smoothing_factor) )
+            next_vertice = self.search_for_next_vertice(smoothing_factor)
+            if next_vertice == None:
+                self.contour.remove_last_vertice()
+            else:
+                self.unexplored_points.remove(next_vertice)
+                self.explored_points.append(next_vertice)
+                self.contour.add_vertice(next_vertice)
+        
+        return( self.contour, self.unexplored_points )
 
     def search_for_next_vertice(self, smoothing_factor):
-        neighbours_sorted_by_distance = sorted(self.points, key=(self.contour.distance_to_point))
+        neighbours_sorted_by_distance = sorted(self.unexplored_points, key=(self.contour.distance_to_point))
         nearest_neighbours = neighbours_sorted_by_distance[:smoothing_factor]
         nearest_neighbours_sorted_by_angle = sorted(nearest_neighbours, key=(self.contour.angle_to_point))
 
@@ -42,8 +41,8 @@ class ContourBuilder(object):
 
     def initial_point(self):
         # start contour with lowest point
-        if len(self.points) == 0:
+        if len(self.unexplored_points) == 0:
             return None
         else:
-            sorted_points = sorted(self.points, key=(lambda p: p[1]))
+            sorted_points = sorted(self.unexplored_points, key=(lambda p: p[1]))
             return sorted_points[0]

@@ -6,9 +6,10 @@ from deep_dolphin.contouring.contour_builder import ContourBuilder
 class MaskToDicomExporter(object):
 
     def __init__(self, nii_mask_path, dicom_dir_path, protocol_name, nii_dir_path=None):
-        self.mask_path = mask_path
+        self.nii_mask_path = nii_mask_path
         self.dicom_dir_path = dicom_dir_path
         self.protocol_name = protocol_name
+        self.nii_dir_path = nii_dir_path
 
     def get_contour_for_mask_slice(self, mask_slice, smoothing_factor):
         edge_points = self.get_edge_points_for_mask_slice(mask_slice)

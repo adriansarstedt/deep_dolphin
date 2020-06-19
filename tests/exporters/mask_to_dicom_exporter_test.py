@@ -27,32 +27,31 @@ class MaskToDicomExporterTest(unittest.TestCase):
         from shapely.geometry import Point, Polygon
 
         edge_points = EdgeDetector(mask_slice).get_edge_points()
-        next_contour = ContourBuilder(edge_points).build(13)
+        (next_contour, unexplored_points) = ContourBuilder(edge_points).build(3)
         next_contour_poly = Polygon(next_contour.vertices)
-        next_enlarged_contour_poly = next_contour_poly.buffer(3)
+        next_enlarged_contour_poly = next_contour_poly.buffer(2)
 
         remaining_edge_points = []
-        for point in edge_points:
+        for point in unexplored_points:
             point_ = Point(point)
             if not point_.within(next_enlarged_contour_poly):
                     remaining_edge_points.append(point)
 
-        next_next_contour = ContourBuilder(remaining_edge_points).build(13)
-        print(next_next_contour)
+        (next_next_contour, next_unexplored_points) = ContourBuilder(remaining_edge_points).build(4)
         next_next_contour_poly = Polygon(next_contour.vertices)
         next_next_enlarged_contour_poly = next_next_contour_poly.buffer(3)
 
         next_remaining_edge_points = []
-        for point in remaining_edge_points:
+        for point in next_unexplored_points:
             point_ = Point(point)
             if not point_.within(next_next_enlarged_contour_poly):
                     next_remaining_edge_points.append(point)
 
         xs, ys = np.array(next_contour.vertices)[:,1], np.array(next_contour.vertices)[:,0]
-        axes.plot(xs,ys, 'go--', linewidth=0, markersize=10)
+        axes.plot(xs,ys, 'go--', linewidth=2, markersize=5)
                 
         xs, ys = np.array(remaining_edge_points)[:,1], np.array(remaining_edge_points)[:,0]
-        axes.plot(xs,ys, 'bo--', linewidth=0, markersize=8)
+        axes.plot(xs,ys, 'bo--', linewidth=0, markersize=3)
 
         xs, ys = np.array(next_next_contour.vertices)[:,1], np.array(next_next_contour.vertices)[:,0]
         axes.plot(xs,ys, 'ro--', linewidth=1, markersize=3)

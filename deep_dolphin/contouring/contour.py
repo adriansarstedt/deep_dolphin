@@ -17,19 +17,16 @@ class Contour(object):
     def copy(self):
         return Contour(self.vertices.copy())
 
-    def first_point(self):
-        if len(self.vertices) > 0:
-            return self.vertices[0]
-        else:
-            return None
+    def remove_last_vertice(self):
+        del(self.vertices[-1])
 
-    def last_point(self):
+    def last_vertice(self):
         if len(self.vertices) > 0:
             return self.vertices[-1]
         else:
             return None
 
-    def previous_point(self):
+    def previous_vertice(self):
         if len(self.vertices) > 1:
             return self.vertices[-2]
         else:
@@ -50,25 +47,21 @@ class Contour(object):
         return( not self.is_complete() )
 
     def has_terminated(self):
-        return ( self.vertices[-1] == None )
+        return ( len(self.vertices) == 0 )
 
     def has_not_terminated(self):
         return ( not self.has_terminated() )
 
     def angle_to_point(self, p):
-        return ( -1*angle_between_points(self.previous_point(), self.last_point(), p) )
+        return ( -1*angle_between_points(self.previous_vertice(), self.last_vertice(), p) )
 
     def distance_to_point(self, p):
-        if (p == self.last_point()):
+        if (p == self.last_vertice()):
             return ( 100000000 )
         else:
-            return ( distance_between_points(self.last_point(), p) )
+            return ( distance_between_points(self.last_vertice(), p) )
 
     def add_vertice(self, point):
         # ensure point is in tuple format
-        if point == None:
-            self.vertices.append(self.vertices[0])
-        else:
-            new_point = (point[0], point[1])
-            self.vertices.append(new_point)
-        return self
+        self.vertices.append(point)
+        return ( self )

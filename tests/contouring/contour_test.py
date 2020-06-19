@@ -5,15 +5,13 @@ class TestContour(unittest.TestCase):
 
     def test_empty(self):
         c = Contour()
-        self.assertEqual(c.first_point(), None)
-        self.assertEqual(c.last_point(), None)
-        self.assertEqual(c.previous_point(), None)
+        self.assertEqual(c.last_vertice(), None)
+        self.assertEqual(c.previous_vertice(), None)
 
     def test_populated(self):
         c = Contour([(1, 1), (2, 2), (3, 3)])
-        self.assertEqual(c.first_point(), (1, 1))
-        self.assertEqual(c.last_point(), (3, 3))
-        self.assertEqual(c.previous_point(), (2, 2))
+        self.assertEqual(c.last_vertice(), (3, 3))
+        self.assertEqual(c.previous_vertice(), (2, 2))
 
     def test_add_vertice(self):
         c = Contour([(1, 1)])
