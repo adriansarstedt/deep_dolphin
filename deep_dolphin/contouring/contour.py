@@ -1,5 +1,6 @@
 import os
-from shapely.geometry import asLineString
+from shapely.geometry import Point, LineString, asLineString
+
 from deep_dolphin.helpers.vectors import angle_between_points
 from deep_dolphin.helpers.vectors import distance_between_points
 
@@ -36,6 +37,13 @@ class Contour(object):
         return (
             (len(self.vertices)>2)
         )
+
+    def intersects_with(self, line_strings):
+        
+        for line_string in line_strings:
+            if asLineString(self.vertices).crosses(line_string):
+                return ( True )
+            
 
     def has_no_overlaps(self):
         return ( (len(self.vertices)<2) or (asLineString(self.vertices).is_simple) )
