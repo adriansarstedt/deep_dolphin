@@ -6,7 +6,7 @@ import numpy as np
 from deep_dolphin.contouring.slice_to_contour_converter import SliceToContourConverter
 from deep_dolphin.contouring.edge_detector import EdgeDetector
 
-class MaskToDicomExporterTest(unittest.TestCase):
+class SliceToContourConverterTest(unittest.TestCase):
 
     def test_(self):
         example_mask_path = "./fixtures/output_mask.nii.gz"
@@ -14,7 +14,7 @@ class MaskToDicomExporterTest(unittest.TestCase):
 
         (X, Y, Z) = mask.shape
         mask_data = mask.get_fdata()
-        mask_slice = mask_data[100]
+        mask_slice = mask_data[95]
 
         fig = plt.figure(figsize=(10,12))
         axes = fig.add_axes([0.15,0.1,0.7,0.8])
@@ -29,6 +29,10 @@ class MaskToDicomExporterTest(unittest.TestCase):
                 xs, ys = np.array(contour)[:,1], np.array(contour)[:,0]
                 axes.plot(xs,ys, 'bo--', linewidth=(2), markersize=(2))
 
+        plt.text(0.5, 1.1,'SliceToContourConverterTest\n\nPurple and yellow show the slice, blue plots show the contours that have been generated',
+            horizontalalignment='center',
+            verticalalignment='top',
+            transform = axes.transAxes)
         plt.show()
 
 

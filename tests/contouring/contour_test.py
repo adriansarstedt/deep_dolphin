@@ -16,16 +16,16 @@ class TestContour(unittest.TestCase):
     def test_add_vertice(self):
         c = Contour([(1, 1)])
         c.add_vertice((2, 2))
-        c.add_vertice([3, 3])
+        c.add_vertice((3, 3))
         self.assertEqual(c.vertices, [(1, 1), (2, 2), (3, 3)])
 
     def test_is_valid(self):
         c_1 = Contour([(1, 1), (2, 2), (3, 3), (4, 4), (4, 0), (0, 0), (0, 2), (1, 2)])
-        self.assertEqual(c_1.is_valid(), True)
+        self.assertEqual(c_1.is_simple(), True)
         c_2 = Contour([(1, 1), (2, 2), (3, 3), (4, 4), (4, 0), (2, 2)])
-        self.assertEqual(c_2.is_valid(), False)
+        self.assertEqual(c_2.is_simple(), False)
         c_3 = Contour([(1, 1)])
-        self.assertEqual(c_3.is_valid(), True)
+        self.assertEqual(c_3.is_simple(), True)
 
     def test_is_complete(self):
         c_1 = Contour([(1, 1), (2, 2), (1, 1)])
