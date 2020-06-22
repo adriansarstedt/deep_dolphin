@@ -11,6 +11,12 @@ class Contour(object):
 
     ### Vertice functionality
 
+    def first_vertice(self):
+        if len(self.vertices) > 0:
+            return self.vertices[0]
+        else:
+            return None
+
     def last_vertice(self):
         if len(self.vertices) > 0:
             return self.vertices[-1]
@@ -42,7 +48,8 @@ class Contour(object):
             self.is_small() or LineString(self.vertices).is_simple
         )
 
-    def intersects(self, line_strings):
+    def intersects(self, contours):
+        line_strings = [LineString(contour) for contour in contours]
         for line_string in line_strings:
             if LineString(self.vertices).crosses(line_string):
                 return ( True )
