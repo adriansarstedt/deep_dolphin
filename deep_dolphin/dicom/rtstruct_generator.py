@@ -8,12 +8,12 @@ import time
 
 from deep_dolphin.dicom.dicom_study_parser import DicomStudyParser
 
-def save_rt_struct(output_path, dicom_path, series_protocol, contours):
-    rt_struct = generate_rt_struct(dicom_path, series_protocol, contours)
+def save_rt_struct(output_path, dicom_dir_path, series_protocol, contours):
+    rt_struct = generate_rt_struct(dicom_dir_path, series_protocol, contours)
     rt_struct.save_as(output_path, write_like_original=False)
 
-def generate_rt_struct(dicom_path, series_protocol, contours):
-    referenced_study = DicomStudyParser(dicom_path)
+def generate_rt_struct(dicom_dir_path, series_protocol, contours):
+    referenced_study = DicomStudyParser(dicom_dir_path)
     referenced_series =  referenced_study.get_series(series_protocol)
 
     ds = Dataset()
@@ -140,6 +140,9 @@ def populate_contour_sequence(ds, referenced_series, contours):
         contour_image_sequence.append(referenced_image)
 
         for contour_set in contours[dicom_slice]:
+            print()
+            print(contour_set)
+            print()
             contour = Dataset()
             contour.ContourImageSequence = contour_image_sequence
             contour.ContourGeometricType = 'CLOSED_PLANAR'

@@ -51,7 +51,10 @@ class PointsToContourConverter(object):
                 return( potential_vertice )
     
     def __k_nearest_neighbours(self, contour, k):
-        neighbours = self.unexplored_points + [contour.first_vertice()]
+        neighbours = self.unexplored_points.copy()
+        if len(contour.vertices) > 2:
+            neighbours += [contour.first_vertice()]
+
         neighbours = sorted(neighbours, key=(contour.distance_to_point))
         return ( neighbours[:k] )
 
