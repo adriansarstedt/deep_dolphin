@@ -1,6 +1,6 @@
 import unittest
 import random
-from deep_dolphin.contouring.points_to_contour_converter import PointsToContourConverter
+from deep_dolphin.contouring.set_to_contour_converter import SetToContourConverter
 
 class PointsToContourConverterTest(unittest.TestCase):
 
@@ -10,7 +10,7 @@ class PointsToContourConverterTest(unittest.TestCase):
         unsorted_vertices = convex_vertices[:-1]
         random.shuffle(unsorted_vertices)
 
-        contour_builder = PointsToContourConverter(unsorted_vertices, 2)
+        contour_builder = SetToContourConverter(unsorted_vertices, 2)
         contours = contour_builder.find_all_contours()
         self.assertEqual(contours, [convex_vertices])
 
@@ -21,7 +21,7 @@ class PointsToContourConverterTest(unittest.TestCase):
         unsorted_vertices = convex_vertices_1[:-1] + convex_vertices_2[:-1]
         random.shuffle(unsorted_vertices)
 
-        contour_builder = PointsToContourConverter(unsorted_vertices, 2)
+        contour_builder = SetToContourConverter(unsorted_vertices, 2)
         contours = contour_builder.find_all_contours()
 
         # Note: self.assertCountEqual checks that two lists contain exactly 
@@ -36,7 +36,7 @@ class PointsToContourConverterTest(unittest.TestCase):
         print(unsorted_vertices)
         random.shuffle(unsorted_vertices)
 
-        contour_builder = PointsToContourConverter(unsorted_vertices, 2)
+        contour_builder = SetToContourConverter(unsorted_vertices, 2)
         contours = contour_builder.find_all_contours()
         self.assertEqual(contours, [concave_vertices])
         

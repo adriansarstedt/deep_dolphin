@@ -6,7 +6,7 @@ from deep_dolphin.helpers.vectors import angle_between_points
 
 from shapely.geometry import Point, Polygon, LineString
 
-class PointsToContourConverter(object):
+class SetToContourConverter(object):
 
     def __init__(self, points=[], smoothing_factor=3):
         self.unexplored_points = points

@@ -140,9 +140,6 @@ def populate_contour_sequence(ds, referenced_series, contours):
         contour_image_sequence.append(referenced_image)
 
         for contour_set in contours[dicom_slice]:
-            print()
-            print(contour_set)
-            print()
             contour = Dataset()
             contour.ContourImageSequence = contour_image_sequence
             contour.ContourGeometricType = 'CLOSED_PLANAR'
