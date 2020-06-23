@@ -2,7 +2,8 @@ import unittest
 import random
 from deep_dolphin.contouring.set_to_contour_converter import SetToContourConverter
 
-class PointsToContourConverterTest(unittest.TestCase):
+class SetToContourConverterTest(unittest.TestCase):
+    maxDiff = None
 
     def test_convex(self):
         convex_vertices = [(0,0), (1,1), (0,2), (-1, 1), (0,0)]
@@ -31,12 +32,15 @@ class PointsToContourConverterTest(unittest.TestCase):
     
     # need to determine a better testing system for this
     def pending_concave(self):
-        concave_vertices = [(2,-2), (2,20), (-2, 20), (-2, -1), (0, 0), (2, -2)]
+        concave_vertices = [
+            (2, -2), (2, -1), (2, 0), (0, 1), 
+            (-2, 0), (-2, -1), (-2, -2), (-1, -1), 
+            (0, 0), (1, -1), (2, -2)]
         unsorted_vertices = concave_vertices[:-1]
         print(unsorted_vertices)
         random.shuffle(unsorted_vertices)
 
-        contour_builder = SetToContourConverter(unsorted_vertices, 2)
+        contour_builder = SetToContourConverter(unsorted_vertices, 1)
         contours = contour_builder.find_all_contours()
         self.assertEqual(contours, [concave_vertices])
         

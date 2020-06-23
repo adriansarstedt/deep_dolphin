@@ -4,13 +4,12 @@ import numpy as np
 # will be used to convert model output mask into a
 # format able to be transported and viewed in dicom software
 
-from deep_dolphin.contouring.nii_to_contour_converter import NiiToContourConverter
 from deep_dolphin.dicom.dicom_coordinate_mapper import DicomCoordinateMapper
 from deep_dolphin.dicom.dicom_series_parser import DicomSeriesParser
 from deep_dolphin.dicom.rtstruct_generator import save_rt_struct
 from deep_dolphin.contouring.slice_to_contour_converter import SliceToContourConverter
 
-class NiiToRtstructExporter(object):
+class MaskToRtstructExporter(object):
 
     def __init__(self, output_path, nii_mask_path, dicom_dir_path, protocol_name):
         # current nii path must have the same affine as the dicom dir

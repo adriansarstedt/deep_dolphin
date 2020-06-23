@@ -8,10 +8,11 @@ from shapely.geometry import Point, Polygon, LineString
 
 class SetToContourConverter(object):
 
-    def __init__(self, points=[], smoothing_factor=3):
+    def __init__(self, points=[], smoothing_factor=3, maximum_side_length=None):
         self.unexplored_points = points
         self.contours = []
         self.smoothing_factor = smoothing_factor
+        self.maximum_side_length = maximum_side_length
 
     def find_all_contours(self):
         while len(self.unexplored_points) > 0:
@@ -56,7 +57,11 @@ class SetToContourConverter(object):
             neighbours += [contour.first_vertice()]
 
         neighbours = sorted(neighbours, key=(contour.distance_to_point))
-        return ( neighbours[:k] )
+        
+        if self.maximum_side_length != None:
+            neighbours = filter((lambda n: contour.distance_to_point(n) < self.maximum_side_length), neighbours)
+        
+        return ( list(neighbours)[:k] )
 
     def __sort_by_angle_to_contour(self, contour, points):
         return ( sorted(points, key=(contour.angle_to_point)) )    
