@@ -5,6 +5,7 @@ jobs:
       - image: circleci/python:3.6.9-stretch
         environment:
           PYTHONPATH: ./
+          CODECOV_TOKEN: 89e40c7b-545b-4925-82ef-edc3b8afd6f1
     steps:
       - checkout
       - run:
@@ -21,4 +22,4 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            make test
+            make test_with_coverage_report

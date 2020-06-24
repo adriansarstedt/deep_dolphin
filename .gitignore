@@ -5,3 +5,7 @@ __pycache__/
 # Allow test outputs to be saved but not tracked
 tests/outputs/*
 !tests/outputs/.gitkeep 
+
+# Dont track coverage using git
+coverage.xml
+.coverage

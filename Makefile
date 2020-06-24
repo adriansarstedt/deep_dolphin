@@ -11,9 +11,12 @@ setup:
 install_dependencies:
 	pip install -r dependencies.txt
 
+TEST_DIRECTORIES = tests/contouring tests/helpers tests/dicom
+
 test:
 	# must include the -P tag to enforce no-path-adjustment
-	# https://stackoverflow.com/questions/16200333/import-errors-when-running-nosetests-that-i-cant-reproduce-outside-of-nose/26584815#26584815
-	# able to add multiple test directories as shown below
-	# $ nosetests tests/contouring tests/server
-	nosetests -P tests/contouring tests/helpers tests/dicom
+	nosetests -P $(TEST_DIRECTORIES)
+
+test_with_coverage_report:
+	nosetests -P $(TEST_DIRECTORIES) --with-coverage
+	codecov
