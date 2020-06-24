@@ -3,9 +3,7 @@
 
 # DeepDolphin
 
-DeepDolphin is a library produced for the Austin Hospital of Melbourne.
-
-It provides a work flow for automated brain tumour segmentation using neural network technology.
+DeepDolphin provides a work flow for automated brain tumour segmentation using neural network technology.
 
 ## Setup
 

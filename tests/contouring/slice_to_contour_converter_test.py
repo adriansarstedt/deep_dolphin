@@ -7,37 +7,45 @@ from deep_dolphin.helpers.areas import area_of_slice, area_of_contours
 
 
 class SliceToContourConverterTest(unittest.TestCase):
-    def test(self):
+    def setUp(self):
+        self.nii_mask = nibabel.load("./fixtures/nii/output_mask.nii.gz")
+        self.mask_data = np.array(self.nii_mask.get_fdata())
+        (_, _, self.slice_count) = self.nii_mask.shape
 
-        nii_mask = nibabel.load("./fixtures/nii/output_mask.nii.gz")
-        mask_data = np.array(nii_mask.get_fdata())
-        (_, _, slice_count) = nii_mask.shape
-
-        for i in range(slice_count):
-            slice_data = mask_data[:, :, i]
+    def test_find_all_contours(self):
+        for instance in range(self.slice_count):
+            slice_data = self.mask_data[:, :, instance]
             contours = SliceToContourConverter(slice_data, 3, 3).find_all_contours()
 
             slice_area = area_of_slice(slice_data)
             contour_area = area_of_contours(contours)
+            difference = self.percentage_difference(slice_area, contour_area)
 
-            area_percentage_difference = 0
-            if slice_area != 0:
-                area_percentage_difference = abs(slice_area - contour_area) / slice_area
+            self.log(instance, slice_area, contour_area, difference)
+            self.assert_percentage_difference(slice_area, contour_area, difference)
 
-            print("Slice: ", i)
-            print("Slice Area: ", slice_area)
-            print("Contour Area: ", contour_area)
-            print("Difference: ", area_percentage_difference, "\n")
+    def assert_percentage_difference(self, slice_area, contour_area, difference):
+        if slice_area <= 3:
+            # three point contours are ignored
+            self.assertTrue(contour_area == 0)
+        elif slice_area <= 50:
+            self.assertTrue(difference <= 0.3)
+        elif slice_area <= 100:
+            self.assertTrue(difference <= 0.15)
+        else:
+            self.assertTrue(difference <= 0.07)
 
-            if slice_area <= 3:
-                # three point contours are ignored
-                self.assertTrue(area_percentage_difference <= 1)
-            elif slice_area <= 50:
-                self.assertTrue(area_percentage_difference <= 0.3)
-            elif slice_area <= 100:
-                self.assertTrue(area_percentage_difference <= 0.15)
-            else:
-                self.assertTrue(area_percentage_difference <= 0.07)
+    def percentage_difference(self, slice_area, contour_area):
+        if slice_area == 0:
+            return 0
+        else:
+            return abs(slice_area - contour_area) / slice_area
+
+    def log(self, instance_number, slice_area, contour_area, difference):
+        print("Slice: ", instance_number)
+        print("Slice Area: ", slice_area)
+        print("Contour Area: ", contour_area)
+        print("Percentage Difference: ", difference, "\n")
 
 
 if __name__ == "__main__":
