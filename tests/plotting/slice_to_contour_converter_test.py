@@ -14,7 +14,7 @@ class SliceToContourConverterTest(unittest.TestCase):
 
         (Y, X, Z) = mask.shape
         mask_data = np.array(mask.get_fdata())
-        mask_slice = mask_data[:, :, 53]
+        mask_slice = mask_data[:, :, 126]
 
         fig = plt.figure(figsize=(10,12))
         axes = fig.add_axes([0.15,0.1,0.7,0.8])
@@ -22,7 +22,7 @@ class SliceToContourConverterTest(unittest.TestCase):
         axes.set_ylim([0,Y])
         axes.imshow(mask_slice)
 
-        contours = SliceToContourConverter(mask_slice, 2, 4).find_all_contours()
+        contours = SliceToContourConverter(mask_slice, 3, 3).find_all_contours()
 
         for contour in contours:
             if contour != []:

@@ -30,7 +30,9 @@ class Contour(object):
             return None
 
     def remove_last_vertice(self):
+        last_vertice = self.vertices[-1]
         del(self.vertices[-1])
+        return last_vertice
 
     def add_vertice(self, point):
         self.vertices.append(point)

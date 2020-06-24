@@ -1,35 +1,9 @@
 import unittest
 import nibabel
 import numpy as np
-from shapely.geometry import Point, Polygon, LineString
 
 from deep_dolphin.contouring.slice_to_contour_converter import SliceToContourConverter
-
-def area_from_slice(slice_data):
-
-    return np.sum(
-        np.array(slice_data, dtype=np.int8)
-    )
-
-def area_from_contours(contours):
-
-    total_area = 0
-
-    for contour in contours:
-        polygon = Polygon(contour)
-        total_area += polygon.area
-
-    return total_area
-
-    # Some interesting numpy logic that may come in handy later 
-    # https://stackoverflow.com/questions/25116595/understanding-numpys-dstack-function    
-    x = np.arange(0, width, 1)
-    y = np.arange(0, height, 1)
-    x_values, y_values = np.meshgrid(x, y)
-    coordinates = np.dstack((x_values,y_values))
-    flat_coordinates = coordinates.reshape(-1, coordinates.shape[-1])
-    print(flat_coordinates)
-    
+from deep_dolphin.helpers.areas import area_of_slice, area_of_contours
 
 class SliceToContourConverterTest(unittest.TestCase):
 
@@ -41,22 +15,29 @@ class SliceToContourConverterTest(unittest.TestCase):
 
         for i in range(slice_count):
             slice_data = mask_data[:, :, i]
-            contours = SliceToContourConverter(slice_data, 3).find_all_contours()
+            contours = SliceToContourConverter(slice_data, 3, 3).find_all_contours()
 
-            slice_area = area_from_slice(slice_data)
-            contour_area = area_from_contours(contours)
+            slice_area = area_of_slice(slice_data)
+            contour_area = area_of_contours(contours)
 
-            area_difference = abs(slice_area-contour_area)
-            print(
-                """
-                Slice: {}
-                Slice Area: {}
-                Contour Area: {}
-                Difference: {}
-                """.format(i, slice_area, contour_area, area_difference)
-            )
+            area_percentage_difference = 0
+            if slice_area != 0:
+                area_percentage_difference = abs(slice_area-contour_area)/slice_area
 
-            self.assertTrue(area_difference<150)
+            print('Slice: ', i)
+            print('Slice Area: ', slice_area)
+            print('Contour Area: ', contour_area)
+            print('Difference: ', area_percentage_difference, '\n')
+
+            if slice_area <= 3:
+                # three point contours are ignored
+                self.assertTrue(area_percentage_difference<=1)
+            elif slice_area <= 50:
+                self.assertTrue(area_percentage_difference<=0.3)
+            elif slice_area <= 100:
+                self.assertTrue(area_percentage_difference<=0.15)
+            else:
+                self.assertTrue(area_percentage_difference<=0.07)
         
 if __name__ == '__main__':
     unittest.main()
