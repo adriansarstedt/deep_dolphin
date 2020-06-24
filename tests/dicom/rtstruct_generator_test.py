@@ -6,41 +6,47 @@ import difflib
 from deep_dolphin.dicom.rtstruct_generator import save_rt_struct, generate_rt_struct
 from deep_dolphin.dicom.dicom_comparator import DicomComparator
 
+
 class RTStructGeneratorTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        self.dicom_path = './fixtures/dicom/compressed_study/'
-        self.series_protocol = 'AXIAL FLAIR +C'
+        self.dicom_path = "./fixtures/dicom/compressed_study/"
+        self.series_protocol = "AXIAL FLAIR +C"
         self.contours = {
-            1: [[-9, -92, -40, -8, -92, -40, -8, -92, -40, -6, -91, -41, -5, -90, -41, -5, -89, -41, -5, -89, -41, -5, -88, -41, -5, -88, -42, -5, -88, -42, -5, -87, -42, -5, -87, -42, -5, -85, -42, -5, -85, -43, -5, -84, -43, -5, -84, -43, -5, -83, -43, -5, -83, -43, -5, -82, -43, -5, -82, -43, -5, -82, -44, -5, -81, -44, -5, -81, -44, -5, -80, -44, -5, -80, -44, -6, -78, -45, -6, -78, -45, -6, -75, -45, -7, -73, -46, -7, -73, -46, -7, -72, -46, -7, -72, -46, -7, -72, -46, -7, -71, -47, -7, -71, -47, -7, -70, -47, -7, -70, -47, -7, -69, -47, -8, -67, -48, -8, -67, -48, -8, -66, -48, -8, -66, -48, -9, -66, -48, -10, -65, -48, -10, -65, -48, -11, -65, -48, -11, -66, -48, -11, -66, -48, -11, -68, -48, -12, -69, -47, -12, -69, -47, -12, -70, -47, -12, -70, -47, -12, -71, -47, -12, -71, -47, -12, -71, -47, -12, -72, -46, -12, -72, -46, -12, -73, -46, -12, -73, -46, -12, -74, -46, -12, -74, -46, -12, -75, -46, -12, -75, -45, -12, -75, -45, -12, -76, -45, -12, -76, -45, -12, -77, -45, -12, -77, -45, -12, -78, -45, -12, -78, -45, -12, -78, -44, -12, -79, -44, -12, -79, -44, -12, -80, -44, -12, -80, -44, -12, -81, -44, -12, -81, -44, -12, -81, -44, -12, -82, -43, -12, -82, -43, -12, -83, -43, -12, -83, -43, -12, -84, -43, -11, -84, -43, -11, -84, -43, -11, -87, -42, -11, -87, -42, -11, -87, -42, -11, -88, -42, -11, -88, -42, -11, -89, -41, -11, -89, -41, -11, -90, -41, -11, -90, -41, -10, -91, -41, -9, -92, -40]],
-            2: [[-8, -103, -30, -8, -103, -30, -7, -103, -30, -7, -103, -30, -7, -103, -30, -6, -103, -30, -6, -102, -30, -6, -100, -31, -5, -100, -31, -5, -99, -31, -5, -99, -31, -5, -98, -31, -5, -98, -31, -5, -98, -31, -5, -97, -32, -5, -97, -32, -5, -96, -32, -5, -96, -32, -5, -94, -33, -4, -93, -33, -4, -93, -33, -4, -92, -33, -4, -92, -33, -4, -92, -33, -4, -91, -33, -4, -91, -33, -4, -90, -34, -4, -90, -34, -4, -89, -34, -4, -89, -34, -4, -89, -34, -4, -88, -34, -4, -88, -34, -4, -86, -35, -5, -84, -35, -4, -83, -36, -4, -83, -36, -4, -82, -36, -4, -82, -36, -5, -80, -37, -5, -80, -37, -5, -79, -37, -5, -79, -37, -6, -77, -38, -6, -76, -38, -6, -76, -38, -6, -76, -38, -6, -75, -38, -6, -75, -38, -6, -73, -39, -6, -72, -39, -6, -72, -39, -6, -71, -39, -7, -69, -40, -7, -69, -40, -7, -68, -40, -8, -66, -41, -8, -66, -41, -8, -65, -41, -8, -65, -41, -8, -64, -41, -8, -64, -41, -8, -64, -42, -9, -63, -42, -9, -63, -42, -10, -63, -42, -10, -63, -42, -11, -63, -42, -11, -64, -41, -11, -64, -41, -11, -65, -41, -12, -66, -41, -12, -67, -41, -12, -68, -40, -12, -69, -40, -12, -69, -40, -12, -70, -40, -12, -70, -40, -12, -70, -40, -12, -71, -39, -12, -71, -39, -12, -72, -39, -12, -72, -39, -12, -73, -39, -12, -73, -39, -12, -73, -39, -12, -74, -39, -12, -74, -38, -12, -75, -38, -12, -75, -38, -12, -76, -38, -12, -76, -38, -11, -78, -37, -11, -78, -37, -11, -79, -37, -10, -81, -36, -10, -81, -36, -10, -82, -36, -10, -82, -36, -10, -82, -36, -10, -83, -36, -10, -83, -36, -10, -84, -36, -9, -86, -35, -9, -86, -35, -11, -88, -34, -11, -88, -34, -12, -88, -34, -12, -89, -34, -12, -89, -34, -12, -90, -34, -12, -90, -34, -12, -91, -34, -11, -92, -33, -11, -93, -33, -11, -93, -33, -11, -94, -33, -11, -94, -33, -11, -95, -32, -11, -95, -32, -10, -97, -32, -10, -97, -32, -10, -98, -31, -10, -98, -31, -10, -98, -31, -10, -99, -31, -10, -99, -31, -10, -100, -31, -10, -100, -31, -10, -101, -31, -10, -101, -30, -9, -103, -30, -8, -103, -30]]
+            1: [
+                [0,0,400,20,0,400,20,20,400,0,20,400]
+            ],
+            2: [
+                [0,0,120,20,0,120,20,20,120,0,20,120],
+                [40,40,120,80,40,120,80,80,120,40,80,120]
+            ],
         }
+        self.fixture = dcmread("./fixtures/dicom/compressed_study/rtstruct.dcm")
+        self.output_path = "./tests/outputs/rtstruct.dcm"
 
+    # The fixture below has been created using MIM and references the
+    # same dicom_path, series_protocol and contours as definied in setUp()
+    # Asserting that there are no content differences between the
+    # newly generated rtstruct and the fixture ensures we are producing
+    # a file which is readable and contains the correct tags
     def test_generate_rt_struct(self):
-        # The fixture below has been created using MIM and references the 
-        # same dicom_path, series_protocol and contours as definied in setUp()
-        # Asserting that there are no content differences between the
-        # newly generated rtstruct and the fixture ensures we are producing
-        # a file which is readable and contains the correct tags
-        generated_rtstruct = generate_rt_struct(self.dicom_path, self.series_protocol, self.contours)
-        fixture = dcmread('./fixtures/dicom/compressed_study/rtstruct.dcm')
-        comparator = DicomComparator(generated_rtstruct, fixture)
-        
-        self.assertTrue(
-            comparator.no_content_differences()
+        generated_rtstruct = generate_rt_struct(
+            self.dicom_path, self.series_protocol, self.contours
         )
+        comparator = DicomComparator(generated_rtstruct, self.fixture)
+        self.assertTrue(comparator.no_content_differences())
 
+    # Check that save_rt_struct() is saving a file to the specified directory
     def test_save_rt_struct(self):
-        # Check that save_rt_struct() is saving a file to the specified directory
-        save_path = './tests/outputs/rtstruct.dcm'
-        if os.path.exists(save_path):
-            os.remove(save_path)
-        save_rt_struct(save_path, self.dicom_path, self.series_protocol, self.contours)
+        self.remove_previous_output()
+        save_rt_struct(self.output_path, self.dicom_path, self.series_protocol, self.contours)
+        self.assertTrue(os.path.exists(self.output_path))
 
-        self.assertTrue(
-            os.path.exists(save_path)
-        )
-        
-if __name__ == '__main__':
+    def remove_previous_output(self):
+        if os.path.exists(self.output_path):
+            os.remove(self.output_path)
+
+
+if __name__ == "__main__":
     unittest.main()
