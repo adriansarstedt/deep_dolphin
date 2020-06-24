@@ -4,7 +4,6 @@
     - Fix
         - set_to_contour_converter_test
     - Write
-        - slice_to_contour_converter_test
         - dicom_series_parser_test
         - mask_to_rtstruct_test
 

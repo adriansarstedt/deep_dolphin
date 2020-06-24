@@ -2,11 +2,14 @@ import os
 from pydicom import dcmread
 import errno
 
+
 class DicomSeriesParser(object):
     def __init__(self, dicom_directory_path, protocol_name):
         if not os.path.exists(dicom_directory_path):
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), dicom_directory_path)
-            
+            raise FileNotFoundError(
+                errno.ENOENT, os.strerror(errno.ENOENT), dicom_directory_path
+            )
+
         self.path = dicom_directory_path
         self.protocol_name = protocol_name
         self.dicom_files = self.find_dicom_files()
@@ -16,7 +19,9 @@ class DicomSeriesParser(object):
             (lambda file_path: dcmread(file_path)), self.__dicom_file_paths()
         )
         series_dicom_files = filter(self.__contains, dicom_files)
-        series_dicom_files = sorted(series_dicom_files, key=(lambda d: d.InstanceNumber))
+        series_dicom_files = sorted(
+            series_dicom_files, key=(lambda d: d.InstanceNumber)
+        )
 
         return series_dicom_files
 
@@ -31,7 +36,7 @@ class DicomSeriesParser(object):
         _, _, file_names = next(os.walk(self.path))
         dicom_file_names = filter(self.__has_dicom_extension, file_names)
         return map(self.__get_path, dicom_file_names)
-        
+
     def __has_dicom_extension(self, filename):
         return ".dcm" in filename
 
@@ -40,12 +45,6 @@ class DicomSeriesParser(object):
 
     def __contains(self, dicom):
         try:
-            return (dicom.ProtocolName == 'AXIAL FLAIR +C')
+            return dicom.ProtocolName == "AXIAL FLAIR +C"
         except AttributeError:
             return False
-
-    
-
-    
-
-    

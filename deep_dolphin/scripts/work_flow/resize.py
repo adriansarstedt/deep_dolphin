@@ -1,8 +1,8 @@
 import nibabel
 import nibabel.processing
 
-input_path = './test_data/1/3_axial_t2.nii.gz'
-output_path = './test_data/1/3_axial_t2_2.nii.gz'
+input_path = "./test_data/1/3_axial_t2.nii.gz"
+output_path = "./test_data/1/3_axial_t2_2.nii.gz"
 voxel_size = [1, 1, 1]
 
 input_img = nibabel.load(input_path)

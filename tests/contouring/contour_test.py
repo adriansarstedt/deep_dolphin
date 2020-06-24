@@ -1,8 +1,8 @@
 import unittest
 from deep_dolphin.contouring.contour import Contour
 
-class TestContour(unittest.TestCase):
 
+class TestContour(unittest.TestCase):
     def test_empty(self):
         c = Contour()
         self.assertEqual(c.last_vertice(), None)
@@ -37,5 +37,6 @@ class TestContour(unittest.TestCase):
         c_4 = Contour([(1, 1), (2, 2), (3, 3), (4, 4), (4, 0), (1, 2)])
         self.assertEqual(c_4.is_complete(), False)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

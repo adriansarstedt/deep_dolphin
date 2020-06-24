@@ -4,8 +4,8 @@ from shapely.geometry import Point, Polygon
 from deep_dolphin.contouring.edge_detector import EdgeDetector
 from deep_dolphin.contouring.set_to_contour_converter import SetToContourConverter
 
-class SliceToContourConverter(object):
 
+class SliceToContourConverter(object):
     def __init__(self, slice, smoothing_factor=3, maximum_side_length=4):
         self.slice = slice
         self.smoothing_factor = smoothing_factor
@@ -16,5 +16,5 @@ class SliceToContourConverter(object):
         p_to_c_converter = SetToContourConverter(
             unordered_edge_points, self.smoothing_factor, self.maximum_side_length
         )
-        
+
         return p_to_c_converter.find_all_contours()
