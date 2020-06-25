@@ -14,12 +14,10 @@ class RTStructGeneratorTest(unittest.TestCase):
         self.dicom_path = "./fixtures/dicom/compressed_study/"
         self.series_protocol = "AXIAL FLAIR +C"
         self.contours = {
-            1: [
-                [0,0,400,20,0,400,20,20,400,0,20,400]
-            ],
+            1: [[0, 0, 400, 20, 0, 400, 20, 20, 400, 0, 20, 400]],
             2: [
-                [0,0,120,20,0,120,20,20,120,0,20,120],
-                [40,40,120,80,40,120,80,80,120,40,80,120]
+                [0, 0, 120, 20, 0, 120, 20, 20, 120, 0, 20, 120],
+                [40, 40, 120, 80, 40, 120, 80, 80, 120, 40, 80, 120],
             ],
         }
         self.fixture = dcmread("./fixtures/dicom/compressed_study/rtstruct.dcm")
@@ -40,7 +38,9 @@ class RTStructGeneratorTest(unittest.TestCase):
     # Check that save_rt_struct() is saving a file to the specified directory
     def test_save_rt_struct(self):
         self.remove_previous_output()
-        save_rt_struct(self.output_path, self.dicom_path, self.series_protocol, self.contours)
+        save_rt_struct(
+            self.output_path, self.dicom_path, self.series_protocol, self.contours
+        )
         self.assertTrue(os.path.exists(self.output_path))
 
     def remove_previous_output(self):
