@@ -7,13 +7,14 @@ from deep_dolphin.helpers.vectors import angle_between_points
 
 
 class SetToContourConverter(object):
-    def __init__(self, points=[], smoothing_factor=3, maximum_side_length=None):
-        self.unexplored_points = points
-        self.contours = []
+    def __init__(self, smoothing_factor=3, maximum_side_length=None):
         self.smoothing_factor = smoothing_factor
         self.maximum_side_length = maximum_side_length
 
-    def find_all_contours(self):
+    def convert(self, points):
+        self.unexplored_points = points
+        self.contours = []
+
         while len(self.unexplored_points) > 0:
             next_contour, discarded_points = self.__find_next_contour__()
             if next_contour.is_empty():

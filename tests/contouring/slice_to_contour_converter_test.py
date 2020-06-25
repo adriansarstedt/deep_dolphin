@@ -12,12 +12,16 @@ class SliceToContourConverterTest(unittest.TestCase):
         self.mask_data = np.array(self.nii_mask.get_fdata())
         (_, _, self.slice_count) = self.nii_mask.shape
 
+        self.converter = SliceToContourConverter(
+            smoothing_factor=3, maximum_side_length=3
+        )
+
     def test_find_all_contours(self):
         for instance in range(self.slice_count):
-            slice_data = self.mask_data[:, :, instance]
-            contours = SliceToContourConverter(slice_data, 3, 3).find_all_contours()
+            slice = self.mask_data[:, :, instance]
+            contours = self.converter.convert(slice)
 
-            slice_area = area_of_slice(slice_data)
+            slice_area = area_of_slice(slice)
             contour_area = area_of_contours(contours)
             difference = self.percentage_difference(slice_area, contour_area)
 

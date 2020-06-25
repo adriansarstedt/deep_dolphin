@@ -6,15 +6,13 @@ from deep_dolphin.contouring.set_to_contour_converter import SetToContourConvert
 
 
 class SliceToContourConverter(object):
-    def __init__(self, slice, smoothing_factor=3, maximum_side_length=4):
-        self.slice = slice
+    def __init__(self, smoothing_factor=3, maximum_side_length=4):
         self.smoothing_factor = smoothing_factor
         self.maximum_side_length = maximum_side_length
-
-    def find_all_contours(self):
-        unordered_edge_points = EdgeDetector(self.slice).get_edge_points()
-        p_to_c_converter = SetToContourConverter(
-            unordered_edge_points, self.smoothing_factor, self.maximum_side_length
+        self.set_to_contour_converter = SetToContourConverter(
+            self.smoothing_factor, self.maximum_side_length
         )
 
-        return p_to_c_converter.find_all_contours()
+    def convert(self, slice):
+        unordered_edge_points = EdgeDetector(slice).get_edge_points()
+        return self.set_to_contour_converter.convert(unordered_edge_points)
