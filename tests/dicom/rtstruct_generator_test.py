@@ -5,6 +5,7 @@ import difflib
 
 from deep_dolphin.dicom.rtstruct_generator import save_rt_struct, generate_rt_struct
 from deep_dolphin.dicom.dicom_comparator import DicomComparator
+from tests.coverage.outputs import destroy_previous_output
 
 # The fixture below has been created using MIM and references the
 # same dicom_path, series_protocol and contours as definied in setUp()
@@ -15,9 +16,9 @@ class RTStructGeneratorTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
+        destroy_previous_output()
         self.dicom_path = "./fixtures/dicom/compressed_study/"
         self.output_path = "./tests/outputs/rtstruct.dcm"
-        self.destroy_previous_output()
 
         self.series_protocol = "AXIAL FLAIR +C"
         self.contours = {
@@ -42,10 +43,6 @@ class RTStructGeneratorTest(unittest.TestCase):
             self.output_path, self.dicom_path, self.series_protocol, self.contours
         )
         self.assertTrue(os.path.exists(self.output_path))
-
-    def destroy_previous_output(self):
-        if os.path.exists(self.output_path):
-            os.remove(self.output_path)
 
 
 if __name__ == "__main__":
