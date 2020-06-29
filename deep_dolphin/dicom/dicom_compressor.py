@@ -3,6 +3,7 @@ import pydicom
 from pydicom.uid import UID
 
 from deep_dolphin.dicom.dicom_study_parser import DicomStudyParser
+from deep_dolphin.dicom.helpers import is_dicom_image
 
 
 class DicomCompressor(object):
@@ -15,11 +16,11 @@ class DicomCompressor(object):
             self.decompress(dicom_path, output_path)
 
     def decompress(self, compressed_file_path, output_file_path):
-        ds = pydicom.dcmread(compressed_file_path)
-        ds.decompress()
-        print(ds.file_meta.TransferSyntaxUID)
-        ds.save_as(output_file_path)
-        return ds
+        if is_dicom_image(compressed_file_path):
+            ds = pydicom.dcmread(compressed_file_path)
+            ds.decompress()
+            ds.save_as(output_file_path)
+            return ds
 
     def is_uncompressed(self, dicom_file_path):
         if ".dcm" in dicom_file_path:

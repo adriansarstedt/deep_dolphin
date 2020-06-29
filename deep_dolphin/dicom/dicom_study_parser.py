@@ -22,6 +22,12 @@ class DicomStudyParser(object):
         dicom_files = map((lambda file_path: dcmread(file_path)), dicom_file_paths)
         return list(dicom_files)
 
+    def dicom_file_paths(self):
+        _, _, file_names = next(os.walk(self.path))
+        dicom_file_names = filter(self.has_dicom_extension, file_names)
+        dicom_file_paths = map(self.get_path, dicom_file_names)
+        return list(dicom_file_paths)
+
     def get(self, tag_name):
         return self.dicom_files[0][tag_name].value
 
