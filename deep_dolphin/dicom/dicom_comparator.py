@@ -1,10 +1,12 @@
 import os
-from pydicom import dcmread
-import difflib
+import pydicom
+from difflib import Differ
+
+from deep_dolphin.helpers.list_comparator import ListComparator
 
 
 class DicomComparator(object):
-    id_tags = [
+    non_content_tags = [
         "Media Storage SOP Instance UID",
         "Series Instance UID",
         "SOP Instance UID",
@@ -16,34 +18,23 @@ class DicomComparator(object):
         "Structure Set Date",
     ]
 
-    def __init__(self, dcm_1, dcm_2):
-        self.dcm_1 = dcm_1
-        self.dcm_2 = dcm_2
+    def __init__(self, dicom_1, dicom_2):
+        dicom_1 = self.__load_dicom__(dicom_1)
+        dicom_2 = self.__load_dicom__(dicom_2)
+        dicom_1_tags = str(dicom_1).split("\n")
+        dicom_2_tags = str(dicom_2).split("\n")
+        self.dicom_tag_comparator = ListComparator(dicom_1_tags, dicom_2_tags)
 
-    def no_content_differences(self):
-        return len(self.load_content_differences()) == 0
+    def get_differences(self, tags_to_ignore=[]):
+        return self.dicom_tag_comparator.get_differences(tags_to_ignore=tags_to_ignore)
 
-    def no_differences(self):
-        return len(self.load_all_differences()) == 0
-
-    def load_content_differences(self):
-        return list(filter(self.is_content_difference, self.load_all_differences()))
-
-    def load_all_differences(self):
-        return list(filter(self.is_marked_as_difference, self.get_comparison()))
-
-    def get_comparison(self):
-        return difflib.Differ().compare(
-            str(self.dcm_1).split("\n"), str(self.dcm_2).split("\n")
+    def get_content_differences(self, tags_to_ignore=[]):
+        return self.dicom_tag_comparator.get_differences(
+            tags_to_ignore=(tags_to_ignore + self.non_content_tags)
         )
 
-    def is_content_difference(self, difference):
-        return not self.is_id_difference(difference)
-
-    def is_id_difference(self, difference):
-        for tag in self.id_tags:
-            if tag in difference:
-                return True
-
-    def is_marked_as_difference(self, line):
-        return (line[0] == "+") or (line[0] == "-")
+    def __load_dicom__(self, dicom):
+        if type(dicom) is pydicom.dataset.FileDataset:
+            return dicom
+        elif type(dicom) is str:
+            return pydicom.dcmread(dicom)

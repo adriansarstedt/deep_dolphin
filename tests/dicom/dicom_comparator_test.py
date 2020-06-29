@@ -13,12 +13,10 @@ class DicomComparatorTest(unittest.TestCase):
 
     def test_identical_dicoms(self):
         comparator = DicomComparator(self.dcm_1, self.dcm_2)
-
-        self.assertTrue(comparator.no_differences())
-        self.assertTrue(comparator.no_content_differences())
+        self.assertEqual(comparator.get_differences(), [])
+        self.assertEqual(comparator.get_content_differences(), [])
 
     def test_unidentical_dicoms(self):
-
         # id differences
         self.dcm_1.MediaStorageSOPInstanceUID = "1"
         self.dcm_2.MediaStorageSOPInstanceUID = "2"
@@ -30,9 +28,8 @@ class DicomComparatorTest(unittest.TestCase):
         self.dcm_1.ReferringPhysicianName = "Bob^Dylan"
 
         comparator = DicomComparator(self.dcm_1, self.dcm_2)
-
-        self.assertEquals(
-            comparator.load_all_differences(),
+        self.assertEqual(
+            comparator.get_differences(),
             [
                 "- (0002, 0003) Media Storage SOP Instance UID      UI: 1",
                 "+ (0002, 0003) Media Storage SOP Instance UID      UI: 2",
@@ -42,12 +39,29 @@ class DicomComparatorTest(unittest.TestCase):
                 "+ (0008, 0090) Referring Physician's Name          PN: 'WADA^MORIKATSU'",
             ],
         )
-        self.assertEquals(
-            comparator.load_content_differences(),
+        self.assertEqual(
+            comparator.get_content_differences(),
             [
                 "- (0008, 0090) Referring Physician's Name          PN: 'Bob^Dylan'",
                 "+ (0008, 0090) Referring Physician's Name          PN: 'WADA^MORIKATSU'",
             ],
+        )
+
+    def test_tags_to_ignore_functionality(self):
+        # content differences
+        self.dcm_1.ReferringPhysicianName = "Bob^Stokes"
+        self.dcm_1.ReferringPhysicianName = "Bob^Dylan"
+
+        comparator = DicomComparator(self.dcm_1, self.dcm_2)
+        self.assertEqual(
+            comparator.get_differences(tags_to_ignore=["Referring Physician's Name"]),
+            [],
+        )
+        self.assertEqual(
+            comparator.get_content_differences(
+                tags_to_ignore=["Referring Physician's Name"]
+            ),
+            [],
         )
 
 
