@@ -27,18 +27,17 @@ class DicomCompressorTest(unittest.TestCase):
         self.assertTrue(os.path.exists(self.output_file_path))
         self.assertTrue(self.compressor.is_uncompressed(self.output_file_path))
 
-        comparator = DicomComparator(
-            self.output_file_path,
-            self.compressed_file_path,
-            ignored_tags=[
-                "File Meta Information Group Length",
-                "Transfer Syntax UID",
-                "Pixel Data",
-            ],
-        )
+        comparator = DicomComparator(self.output_file_path, self.compressed_file_path)
 
         self.assertEqual(
-            comparator.get_content_differences(), [],
+            comparator.get_content_differences(
+                tags_to_ignore=[
+                    "File Meta Information Group Length",
+                    "Transfer Syntax UID",
+                    "Pixel Data",
+                ]
+            ),
+            [],
         )
 
     def destroy_previous_output(self):
