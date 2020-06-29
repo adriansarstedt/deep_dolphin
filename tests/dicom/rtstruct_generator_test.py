@@ -5,7 +5,7 @@ import difflib
 
 from deep_dolphin.dicom.rtstruct_generator import save_rt_struct, generate_rt_struct
 from deep_dolphin.dicom.dicom_comparator import DicomComparator
-from tests.coverage.outputs import destroy_previous_output
+from tests.coverage.outputs import destroy_previous_outputs
 
 # The fixture below has been created using MIM and references the
 # same dicom_path, series_protocol and contours as definied in setUp()
@@ -16,7 +16,7 @@ class RTStructGeneratorTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        destroy_previous_output()
+        destroy_previous_outputs()
         self.dicom_path = "./fixtures/dicom/compressed_study/"
         self.output_path = "./tests/outputs/rtstruct.dcm"
 

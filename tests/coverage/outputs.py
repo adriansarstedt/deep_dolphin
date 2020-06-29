@@ -4,7 +4,7 @@ import shutil
 TEST_OUTPUT_DIRECTORY = "./tests/outputs/"
 
 
-def destroy_previous_output():
+def destroy_previous_outputs():
     if os.path.exists(TEST_OUTPUT_DIRECTORY):
         shutil.rmtree(TEST_OUTPUT_DIRECTORY)
 

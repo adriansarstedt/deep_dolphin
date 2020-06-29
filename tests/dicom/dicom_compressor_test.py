@@ -6,14 +6,14 @@ from deep_dolphin.dicom.dicom_compressor import DicomCompressor
 from deep_dolphin.dicom.dicom_comparator import DicomComparator
 from deep_dolphin.dicom.dicom_study_parser import DicomStudyParser
 from deep_dolphin.dicom.helpers import is_dicom_image
-from tests.coverage.outputs import destroy_previous_output
+from tests.coverage.outputs import destroy_previous_outputs
 
 
 class DicomCompressorTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        destroy_previous_output()
+        destroy_previous_outputs()
         self.set_up_output_directories()
         self.compressor = DicomCompressor()
 
