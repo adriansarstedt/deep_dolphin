@@ -1,11 +1,17 @@
 import os
+import errno
 
 from deep_dolphin.nii.helpers import is_nii_file
 
 
 class NiiDirectoryParser(object):
     def __init__(self, directory_path):
-        self.directory = directory_path
+        if os.path.exists(directory_path):
+            self.directory = directory_path
+        else:
+            raise FileNotFoundError(
+                errno.ENOENT, os.strerror(errno.ENOENT), directory_path
+            )
 
     def get_nii_file_paths(self):
         _, _, files = next(os.walk(self.directory))
