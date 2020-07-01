@@ -27,7 +27,7 @@ class MaskToRtstructExporter(object):
         formatted_contours = {}
         for i in range(slice_count):
             slice_data = mask_data[:, :, i]
-            slice_contours = SliceToContourConverter(slice_data, 3).find_all_contours()
+            slice_contours = SliceToContourConverter(3).convert(slice_data)
 
             translated_contours = []
             for j in range(len(slice_contours)):

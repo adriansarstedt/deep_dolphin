@@ -11,7 +11,7 @@ setup:
 install_dependencies:
 	pip install -r dependencies.txt
 
-TEST_DIRECTORIES = tests/contouring tests/helpers tests/dicom
+TEST_DIRECTORIES = tests/contouring tests/helpers tests/dicom tests/nii
 
 test:
 	# must include the -P tag to enforce no-path-adjustment
