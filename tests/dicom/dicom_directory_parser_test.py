@@ -1,4 +1,6 @@
 import unittest
+import pydicom
+
 from deep_dolphin.dicom.dicom_directory_parser import DicomDirectoryParser
 
 

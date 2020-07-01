@@ -26,5 +26,8 @@ class DicomDirectoryParser(object):
         dicom_file_names = filter(is_dicom, file_names)
         return list(map(self.get_path, dicom_file_names))
 
+    def get_dicom_files(self):
+        return list(map(lambda path: dcmread(path), self.get_dicom_paths()))
+
     def get_path(self, file_name):
         return os.path.join(self.path, file_name)
