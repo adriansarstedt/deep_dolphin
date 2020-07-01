@@ -10,7 +10,7 @@ class NiiDirectoryParserTest(unittest.TestCase):
 
     def test_get_nii_file_paths(self):
         nii_file_paths = self.nii_directory_parser.get_nii_file_paths()
-        self.assertEqual(
+        self.assertCountEqual(
             nii_file_paths,
             ["./fixtures/nii/reshaped_mask.nii", "./fixtures/nii/original_flair.nii"],
         )

@@ -13,12 +13,12 @@ class DicomDirectoryParserTest(unittest.TestCase):
     def test_get_image_paths(self):
         self.assertEqual(len(self.directory_parser.get_image_paths()), 84)
         self.assertEqual(
-            self.directory_parser.get_image_paths()[:4],
+            sorted(self.directory_parser.get_image_paths())[:4],
             [
-                "./fixtures/dicom/compressed_study/IM-0005-0011.dcm",
-                "./fixtures/dicom/compressed_study/IM-0004-0005.dcm",
-                "./fixtures/dicom/compressed_study/IM-0004-0011.dcm",
-                "./fixtures/dicom/compressed_study/IM-0005-0005.dcm",
+                "./fixtures/dicom/compressed_study/IM-0002-0001.dcm",
+                "./fixtures/dicom/compressed_study/IM-0002-0002.dcm",
+                "./fixtures/dicom/compressed_study/IM-0002-0003.dcm",
+                "./fixtures/dicom/compressed_study/IM-0002-0004.dcm",
             ],
         )
 
