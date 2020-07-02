@@ -21,6 +21,18 @@ class DicomSeriesParser2(object):
             "Must supply either series_uid or series_protocol_name to DicomSeriesParser"
         )
 
+    def get_file_by(self, tag_name, tag_value):
+        matches = list(
+            filter(
+                lambda dicom: dicom[tag_name].value == tag_value, self.get_dicom_files()
+            )
+        )
+        if len(matches) == 1:
+            return matches[0]
+
+    def get_tag(self, tag_name):
+        return self.get_dicom_files()[0][tag_name].value
+
     def get_dicom_files(self):
         return list(map(lambda file_path: dcmread(file_path), self.get_dicom_paths()))
 

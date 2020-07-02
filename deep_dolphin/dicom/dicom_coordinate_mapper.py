@@ -28,3 +28,26 @@ class DicomCoordinateMapper(object):
         )
 
         return [x, y, z]
+
+    def patient_to_image_coordinates(self, x, y, z, dicom):
+        # dicom = self.series.dicom_files[slice_number]
+        i = (
+            (dicom.PixelSpacing[1] * dicom.ImageOrientationPatient[3])
+            * (y - dicom.ImagePositionPatient[1])
+            - (dicom.PixelSpacing[1] * dicom.ImageOrientationPatient[4])
+            * (x - dicom.ImagePositionPatient[0])
+        ) / (
+            (dicom.PixelSpacing[1] * dicom.ImageOrientationPatient[3])
+            * (dicom.PixelSpacing[0] * dicom.ImageOrientationPatient[1])
+            - (dicom.PixelSpacing[1] * dicom.ImageOrientationPatient[4])
+            * (dicom.PixelSpacing[0] * dicom.ImageOrientationPatient[0])
+        )
+
+        j = (
+            x
+            - dicom.ImagePositionPatient[0]
+            - i * dicom.PixelSpacing[0] * dicom.ImageOrientationPatient[0]
+        ) / (dicom.PixelSpacing[1] * dicom.ImageOrientationPatient[3])
+
+        return [i, j]
+
